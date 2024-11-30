@@ -1,0 +1,5 @@
+langchain
+langsmith
+openai
+mysql-connector-python
+python-dotenv
