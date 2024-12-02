@@ -117,7 +117,3 @@ Beiträge sind willkommen! Bitte erstellen Sie einen Pull Request für alle Änd
 ## Lizenz
 
 [MIT License](https://opensource.org/licenses/MIT)
-
-```
-
-Du kannst mehr Details zu den Änderungen im Pull-Request [hier](https://github.com/Fa-commits/kete/pull/1/files) einsehen.
