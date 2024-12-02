@@ -8,26 +8,16 @@ import os
 load_dotenv()
 
 def main():
-    # Initialize LangSmith client
-    client = Client()
-
-    # Create RAG agent
     agent = create_rag_agent()
 
-    # Example query
-# Liste von Abfragen für Batch-Verarbeitung
     queries = [
-        "How many datapoints are in the database?",
-        "What is the average value of column X?",
-        "List the top 5 entries by column 1."
+        "Welche Tabellen gibt es in der Datenbank?",
+        "Gib die Tabellen und ihre Wert-Spalten an, welche in der Datenbank vorhanden sind."
     ]
-    
-    # Batch-Verarbeitung mit Tracing
-    results = [query_agent(agent, query) for query in queries]
-    
-    # Ausgabe der Ergebnisse
-    for query, result in zip(queries, results):
+
+    for query in queries:
         print(f"Query: {query}")
+        result = query_agent(agent, query)
         print(f"Result: {result}")
         print("---")
 
