@@ -1,6 +1,6 @@
 # RAG Agent mit MySQL-Integration
 
-Dieses Projekt implementiert einen Retrieval-Augmented Generation (RAG) Agenten, der Daten aus einer MySQL-Datenbank in den Abfrageprozess einbindet. Es nutzt LangChain und LangSmith (EU) für die Verarbeitung natürlicher Sprache und Tracing.
+Dieses Projekt implementiert einen Retrieval-Augmented Generation (RAG) Agenten, der Daten aus einer MySQL-Datenbank in den Abfrageprozess einbindet. Es nutzt LangChain und LangSmith (EU) für die Verarbeitung.
 
 ## Voraussetzungen
 
@@ -65,6 +65,31 @@ project_root/
 - `rag_agent.py`: Implementiert den RAG-Agenten mit LangChain.
 - `main.py`: Hauptskript zum Ausführen des Agenten.
 
+## Neueste Änderungen
+
+### Implementierung des RAG-Agents mit MySQL-Integration
+Pull Request: [#1](https://github.com/Fa-commits/kete/pull/1)
+
+#### Änderungen:
+- Hinzufügen der Datei `.DS_Store`.
+- Modifikation der `.gitignore`:
+  - Hinzufügen von `.pyc` zur Ignorierliste.
+- Aktualisierung der `requirements.txt`:
+  - Hinzufügen der folgenden Abhängigkeiten:
+    - `langchain`
+    - `langchain-openai`
+    - `langchain-community`
+    - `langchain-experimental`
+    - `langgraph`
+    - `langsmith`
+    - `openai`
+    - `mysql-connector-python`
+    - `python-dotenv`
+    - `pymysql`
+    - `sqlalchemy`
+
+Für weitere Details siehe den [Pull Request](https://github.com/Fa-commits/kete/pull/1).
+
 ## Entwicklung
 
 1. Erstellen Sie einen neuen Branch für Ihre Änderungen:
@@ -92,3 +117,7 @@ Beiträge sind willkommen! Bitte erstellen Sie einen Pull Request für alle Änd
 ## Lizenz
 
 [MIT License](https://opensource.org/licenses/MIT)
+
+```
+
+Du kannst mehr Details zu den Änderungen im Pull-Request [hier](https://github.com/Fa-commits/kete/pull/1/files) einsehen.
