@@ -32,8 +32,15 @@ Dieses Projekt implementiert einen Retrieval-Augmented Generation (RAG) Agenten,
    ```
    LANGCHAIN_API_KEY=your_langsmith_api_key
    OPENAI_API_KEY=your_openai_api_key
-   LANGCHAIN_ENDPOINT=https://api.eu.langchain.com
+   LANGCHAIN_ENDPOINT=https://eu.api.smith.langchain.com
    MYSQL_CONNECTION_STRING=your_mysql_connection_string
+   LANGCHAIN_PROJECT=kete_langSmith
+   MYSQL_HOST=mysql-kete-kete-database.c.aivencloud.com
+   MYSQL_USER=your_user
+   MYSQL_PASSWORD=your_password
+   MYSQL_DATABASE=your_database_name
+   MYSQL_PORT=your_port
+   MYSQL_SSL_CA=/location/of/ca.pem
    ```
 
 ## Verwendung
@@ -53,6 +60,7 @@ project_root/
 ├── src/
 │   ├── __init__.py
 │   ├── database.py
+│   ├── outputparser.py
 │   ├── rag_agent.py
 │   └── main.py
 │
@@ -64,6 +72,7 @@ project_root/
 - `database.py`: Enthält Funktionen für die Datenbankverbindung und -abfragen.
 - `rag_agent.py`: Implementiert den RAG-Agenten mit LangChain.
 - `main.py`: Hauptskript zum Ausführen des Agenten.
+- `outputparser.py`: Enthält die Aufbereitung der AI-Messages welche im ReAct-Agent genutzt werden um den Promt korrekt auszuwerden.
 
 ## Neueste Änderungen
 
@@ -80,12 +89,10 @@ Pull Request: [#1](https://github.com/Fa-commits/kete/pull/1)
     - `langchain-openai`
     - `langchain-community`
     - `langchain-experimental`
-    - `langgraph`
     - `langsmith`
     - `openai`
     - `mysql-connector-python`
     - `python-dotenv`
-    - `pymysql`
     - `sqlalchemy`
 
 Für weitere Details siehe den [Pull Request](https://github.com/Fa-commits/kete/pull/1).
