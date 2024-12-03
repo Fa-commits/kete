@@ -2,10 +2,7 @@ langchain
 langchain-openai
 langchain-community
 langchain-experimental
-langgraph
-langsmith
 openai
 mysql-connector-python
 python-dotenv
-pymysql
 sqlalchemy
