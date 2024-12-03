@@ -3,10 +3,16 @@ from rag_agent import create_rag_agent, query_agent
 from dotenv import load_dotenv
 import os
 
+from langsmith import Client
+from langchain.callbacks.tracers.langchain import LangChainTracer
+
 # Lade Umgebungsvariablen aus der .env Datei
 load_dotenv()
 
 def main():
+    client = Client()
+    tracer = LangChainTracer(project_name=os.getenv("LANGCHAIN_PROJECT"))
+    
     # Erstelle den RAG-Agenten
     agent = create_rag_agent()
     
@@ -23,7 +29,7 @@ def main():
         print(f"Query: {query}")
         
         # Führe die Abfrage mit dem Agenten aus und speichere das Ergebnis
-        result = query_agent(agent, query)
+        result = query_agent(agent, query, callbacks=[tracer])
         
         # Gib das Ergebnis der Abfrage aus
         print(f"Result: {result}")

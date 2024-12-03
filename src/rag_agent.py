@@ -75,12 +75,12 @@ def create_rag_agent():
 
     return agent_executor
 
-def query_agent(agent, query: str):
+def query_agent(agent, query: str, callbacks=None):
     """
     Führt eine Abfrage mit dem Agenten aus und behandelt mögliche Fehler.
     """
     try:
-        return agent.invoke({"input": query})
+        return agent.invoke({"input": query}, config={"callbacks": callbacks})
     except Exception as e:
         return f"Ein Fehler ist aufgetreten: {str(e)}"
     
