@@ -1,84 +1,126 @@
-# RAG Agent mit Langchain und MySQL
+# RAG Agent mit MySQL-Integration
 
-Dieses Projekt implementiert einen Retrieval-Augmented Generation (RAG) Agenten unter Verwendung von Langchain und Langsmith. Der Agent ist in der Lage, Abfragen zu verarbeiten und dabei Informationen aus einer MySQL-Datenbank einzubeziehen.
-
-## Funktionen
-
-- Nutzung von Langchain für die Erstellung eines SQL-Agenten
-- Integration mit einer MySQL-Datenbank für datengestützte Antworten
-- Verwendung von Langsmith für Leistungsüberwachung und -optimierung
-- Interaktive Benutzeroberfläche für Abfragen
+Dieses Projekt implementiert einen Retrieval-Augmented Generation (RAG) Agenten, der Daten aus einer MySQL-Datenbank in den Abfrageprozess einbindet. Es nutzt LangChain und LangSmith (EU) für die Verarbeitung.
 
 ## Voraussetzungen
 
-- Python 3.8 oder höher
+- Python 3.8+
+- Git
+- Visual Studio Code (empfohlen)
 - MySQL-Datenbank
-- OpenAI API-Schlüssel
-- Langsmith API-Schlüssel
 
 ## Installation
 
 1. Klonen Sie das Repository:
-   ```bash
-   git clone https://github.com/IhrBenutzername/IhrRepositoryName.git
-   cd IhrRepositoryName
+   ```
+   git clone https://github.com/your-username/your-repo-name.git
+   cd your-repo-name
    ```
 
-2. Erstellen Sie eine virtuelle Umgebung:
-   ```bash
+2. Erstellen Sie eine virtuelle Umgebung und aktivieren Sie sie:
+   ```
    python -m venv venv
+   source venv/bin/activate  # Für Windows: venv\Scripts\activate
    ```
 
-3. Aktivieren Sie die virtuelle Umgebung:
-   - Windows: `venv\Scripts\activate`
-   - macOS/Linux: `source venv/bin/activate`
-
-4. Installieren Sie die erforderlichen Pakete:
-   ```bash
+3. Installieren Sie die erforderlichen Pakete:
+   ```
    pip install -r requirements.txt
    ```
 
-5. Erstellen Sie eine `.env` Datei im Hauptverzeichnis und fügen Sie folgende Umgebungsvariablen hinzu:
+4. Erstellen Sie eine `.env`-Datei im Projektroot und fügen Sie folgende Umgebungsvariablen hinzu:
    ```
-   OPENAI_API_KEY=Ihr_OpenAI_API_Schlüssel
-   LANGCHAIN_API_KEY=Ihr_Langsmith_API_Schlüssel
-   LANGCHAIN_ENDPOINT=https://api.eu.langsmith.com
-   MYSQL_HOST=Ihr_MySQL_Host
-   MYSQL_USER=Ihr_MySQL_Benutzer
-   MYSQL_PASSWORD=Ihr_MySQL_Passwort
-   MYSQL_DATABASE=Ihr_MySQL_Datenbankname
+   LANGCHAIN_API_KEY=your_langsmith_api_key
+   OPENAI_API_KEY=your_openai_api_key
+   LANGCHAIN_ENDPOINT=https://eu.api.smith.langchain.com
+   MYSQL_CONNECTION_STRING=your_mysql_connection_string
+   LANGCHAIN_PROJECT=kete_langSmith
+   MYSQL_HOST=mysql-kete-kete-database.c.aivencloud.com
+   MYSQL_USER=your_user
+   MYSQL_PASSWORD=your_password
+   MYSQL_DATABASE=your_database_name
+   MYSQL_PORT=your_port
+   MYSQL_SSL_CA=/location/of/ca.pem
    ```
 
 ## Verwendung
 
-1. Starten Sie das Programm:
-   ```bash
+1. Stellen Sie sicher, dass Ihre virtuelle Umgebung aktiviert ist.
+
+2. Führen Sie das Hauptskript aus:
+   ```
    python src/main.py
    ```
-
-2. Geben Sie Ihre Abfragen ein, wenn Sie dazu aufgefordert werden.
-
-3. Geben Sie 'exit' ein, um das Programm zu beenden.
 
 ## Projektstruktur
 
 ```
-IhrRepositoryName/
-├── .env
-├── .gitignore
-├── requirements.txt
+project_root/
+│
 ├── src/
 │   ├── __init__.py
-│   ├── agent.py
 │   ├── database.py
+│   ├── outputparser.py
+│   ├── rag_agent.py
 │   └── main.py
-└── README.md
+│
+├── .env
+├── .gitignore
+└── requirements.txt
 ```
+
+- `database.py`: Enthält Funktionen für die Datenbankverbindung und -abfragen.
+- `rag_agent.py`: Implementiert den RAG-Agenten mit LangChain.
+- `main.py`: Hauptskript zum Ausführen des Agenten.
+- `outputparser.py`: Enthält die Aufbereitung der AI-Messages welche im ReAct-Agent genutzt werden um den Promt korrekt auszuwerden.
+
+## Neueste Änderungen
+
+### Implementierung des RAG-Agents mit MySQL-Integration
+Pull Request: [#1](https://github.com/Fa-commits/kete/pull/1)
+
+#### Änderungen:
+- Hinzufügen der Datei `.DS_Store`.
+- Modifikation der `.gitignore`:
+  - Hinzufügen von `.pyc` zur Ignorierliste.
+- Aktualisierung der `requirements.txt`:
+  - Hinzufügen der folgenden Abhängigkeiten:
+    - `langchain`
+    - `langchain-openai`
+    - `langchain-community`
+    - `langchain-experimental`
+    - `langsmith`
+    - `openai`
+    - `mysql-connector-python`
+    - `python-dotenv`
+    - `sqlalchemy`
+
+Für weitere Details siehe den [Pull Request](https://github.com/Fa-commits/kete/pull/1).
+
+## Entwicklung
+
+1. Erstellen Sie einen neuen Branch für Ihre Änderungen:
+   ```
+   git checkout -b feature/your-feature-name
+   ```
+
+2. Machen Sie Ihre Änderungen und committen Sie sie:
+   ```
+   git add .
+   git commit -m "Beschreibung Ihrer Änderungen"
+   ```
+
+3. Pushen Sie den Branch zu GitHub:
+   ```
+   git push origin feature/your-feature-name
+   ```
+
+4. Erstellen Sie einen Pull Request auf GitHub.
 
 ## Beitrag
 
-Beiträge sind willkommen! Bitte erstellen Sie einen Pull Request oder öffnen Sie ein Issue für Vorschläge und Fehlermeldungen.
+Beiträge sind willkommen! Bitte erstellen Sie einen Pull Request für alle Änderungen.
 
 ## Lizenz
 
-[MIT](https://choosealicense.com/licenses/mit/)
+[MIT License](https://opensource.org/licenses/MIT)
