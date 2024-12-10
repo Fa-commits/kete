@@ -3,7 +3,7 @@ from flask_cors import CORS
 from main import main
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": ["http://localhost:8080", "http://127.0.0.1:8080", "http://0.0.0.0:8080", "http://192.168.1.127:8080"]}})
+CORS(app, resources={r"/api/*": {"origins": ["http://localhost:8080", "http://127.0.0.1:8080", "http://0.0.0.0:8080", "http://192.168.1.127:8080", "http://localhost:5173/"]}})
 
 # Your routes go here
 @app.route('/api/query', methods=['POST'])
