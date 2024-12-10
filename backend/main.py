@@ -11,8 +11,7 @@ from dotenv import load_dotenv
 from langsmith import Client
 from langchain.callbacks.tracers.langchain import LangChainTracer
 from langchain_core.tracers.context import tracing_v2_enabled
-from langchain_community.cache import BaseCache
-from langchain_experimental.sql import SQLDatabaseChain
+from langchain_core.caches import BaseCache
 
 import os
 
@@ -20,23 +19,36 @@ import os
 load_dotenv()
 
 def main(query):
+    
+    if not os.getenv("MYSQL_CONNECTION_STRING") or not os.getenv("LANGCHAIN_PROJECT"):
+        print("Fehlende Umgebungsvariablen. Bitte überprüfen Sie Ihre .env Datei.")
+        return
+
     # Initialisiere Language Model und Datenbank
     llm = ChatOpenAI(temperature=0)
-    db = SQLDatabase.from_uri(os.getenv("MYSQL_CONNECTION_STRING"))
+    
+    try:
+        db = SQLDatabase.from_uri(os.getenv("MYSQL_CONNECTION_STRING"))
+    except Exception as e:
+        print(f"Fehler bei der Datenbankverbindung: {e}")
+        return
     
     # Initialisiere LangSmith Client und Tracer
     client = Client()
     tracer = LangChainTracer(project_name=os.getenv("LANGCHAIN_PROJECT"))
-    
-    BaseCache.model_rebuild()
-    
+        
     # Definiere SQL-Tool
-    sql_chain = SQLDatabaseChain.from_llm(llm=llm, db=db, verbose=True)
     SQLDatabaseChain.model_rebuild()
-    
+    sql_chain = SQLDatabaseChain.from_llm(
+        llm=llm, 
+        db=db, 
+        verbose=True,
+        use_query_checker=True,
+        return_intermediate_steps=True
+    )    
     # Definiere SQL-Tool
     sql_tool = StructuredTool.from_function(
-        func=lambda input: sql_chain.invoke(input),
+        func=lambda input: sql_chain.invoke({"query": input}),
         name="sql_database",
         description="Nützlich für Abfragen der SQL-Datenbank für faktische Informationen.",
         return_direct=False,
@@ -52,7 +64,7 @@ def main(query):
     # Definiere Tavily-Suchtool
     tav_tool = StructuredTool.from_function(
         func=TavilySearchResults(
-            max_results=5,
+            # max_results=5,
             search_depth="advanced",
             include_answer=True,
             include_raw_content=True,
@@ -76,8 +88,6 @@ def main(query):
     # Definiere Prompt-Template für den Agenten
     prompt = PromptTemplate(
         template="""Du bist ein effizienter SQL-Datenbankexperte. Deine Aufgabe ist es, Fragen über Datenbanken mit minimalem Aufwand und so wenig Iterationen wie möglich zu beantworten. Du hast Zugriff auf folgende Tools:
-
-        
 
         Befolge dieses Format STRIKT:
 
@@ -103,12 +113,20 @@ def main(query):
     search_agent, search_adaptive_selector, search_learning_system, search_user_profile = create_rag_agent(llm, [tav_tool], prompt)
     
     # Erstelle Multi-Agent-System
-    multi_agent_system = MultiAgentSystem([sql_agent, search_agent])
-    
+    try:
+        multi_agent_system = MultiAgentSystem([sql_agent, search_agent])
+    except Exception as e:
+        print(f"Fehler bei der Erstellung des Multi-Agent-Systems: {e}")
+        return    
 
         
     # Verwende Multi-Agent-System zur Beantwortung der Frage
-    result = multi_agent_system.run(query)
+    try:
+        result = multi_agent_system.run(query)
+    except Exception as e:
+        print(f"Fehler bei der Ausführung der Anfrage: {e}")
+        return "Ein Fehler ist aufgetreten bei der Verarbeitung Ihrer Anfrage."
+
     # Stellen Sie sicher, dass das Ergebnis ein String ist
     if isinstance(result, str):
         return result

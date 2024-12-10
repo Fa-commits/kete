@@ -1,5 +1,4 @@
-export default {
-    webpack(config, env, helpers, options) {
+export default (config, env, helpers) => {
       config.devServer = config.devServer || {};
       config.devServer.proxy = {
         '/api': {
@@ -7,5 +6,4 @@ export default {
           changeOrigin: true,
         },
       };
-    },
   };

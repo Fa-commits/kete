@@ -17,6 +17,12 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/eslint-parser": "^7.25.9",
+    "@babel/plugin-syntax-class-properties": "^7.12.13",
+    "@babel/preset-env": "^7.26.0",
+    "@babel/register": "^7.25.9",
+    "babel-loader": "^8.4.1",
     "cross-env": "^7.0.3",
     "enzyme": "^3.11.0",
     "enzyme-adapter-preact-pure": "^4.0.0",
@@ -24,15 +30,17 @@
     "eslint-config-preact": "^1.3.0",
     "jest": "^27.0.0",
     "jest-preset-preact": "^4.0.5",
-    "preact-cli": "^3.4.2",
-    "sirv-cli": "^2.0.2",
-    "@babel/plugin-syntax-class-properties": "^7.12.13"
+    "preact-cli": "^1.3.0",
+    "sirv-cli": "^2.0.2"
   },
   "dependencies": {
+    "@babel/eslint-parser": "^7.15.0",
     "axios": "^1.7.9",
     "preact": "^10.11.3",
     "preact-render-to-string": "^5.2.6",
-    "preact-router": "^3.2.1"
+    "preact-router": "^3.2.1",
+    "react-markdown": "^9.0.1",
+    "core-js": "^3.38.1"
   },
   "jest": {
     "preset": "jest-preset-preact",
@@ -40,5 +48,9 @@
       "<rootDir>/tests/__mocks__/browserMocks.js",
       "<rootDir>/tests/__mocks__/setupTests.js"
     ]
+  },
+  "resolutions": {
+    "@jridgewell/gen-mapping": "^0.3.2",
+    "babel-core": "^7.0.0"
   }
 }

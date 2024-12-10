@@ -1,48 +1,54 @@
-import { h } from 'preact';
-import { useState } from 'preact/hooks';
-import axios from 'axios';
+import { h } from "preact";
+import { useState } from "preact/hooks";
+import axios from "axios";
+import ReactMarkdown from "react-markdown";
 
 const App = () => {
-  const [query, setQuery] = useState('');
-  const [result, setResult] = useState('');
+  const [query, setQuery] = useState("");
+  const [chatHistory, setChatHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!query.trim()) return;
     setIsLoading(true);
-    setResult('');
     try {
-      const response = await axios.post('http://127.0.0.1:5000/api/query', { query });
-      setResult(response.data.result);
+      const response = await axios.post("http://127.0.0.1:5000/api/query", {
+        query,
+      });
+      setChatHistory((prev) => [
+        ...prev,
+        { question: query, answer: response.data.result },
+      ]);
     } catch (error) {
-      console.error('Error:', error);
-      setResult('Ein Fehler ist aufgetreten.');
+      console.error("Error:", error);
+      setChatHistory((prev) => [
+        ...prev,
+        { question: query, answer: "Ein Fehler ist aufgetreten." },
+      ]);
     } finally {
       setIsLoading(false);
-      setQuery('');
+      setQuery("");
     }
   };
 
-  const formatResult = (text) => {
-    return text.split('\n').map((line, index) => {
-      if (line.startsWith('Agent')) {
-        return <h3 key={index}>{line}</h3>;
-      } else if (line.endsWith(':')) {
-        return <h4 key={index}>{line}</h4>;
-      } else if (line.startsWith('-')) {
-        return <li key={index}>{line.substring(1).trim()}</li>;
-      } else if (line.trim() === '') {
-        return <br key={index} />;
-      } else {
-        return <p key={index}>{line}</p>;
-      }
-    });
-  };
-
   return (
-    <div>
-      <h1>AI Query System</h1>
-      <form onSubmit={handleSubmit}>
+    <div className="chat-container">
+      <div className="chat-history">
+        {chatHistory.map((entry, index) => (
+          <div key={index} className="chat-entry">
+            <div className="chat-question">
+              <span className="message-badge">I</span>
+              {entry.question}
+            </div>
+            <div className="chat-answer">
+              <span className="message-badge">A</span>
+              <ReactMarkdown>{entry.answer}</ReactMarkdown>
+            </div>
+          </div>
+        ))}
+      </div>
+      <form onSubmit={handleSubmit} className="chat-input">
         <input
           type="text"
           value={query}
@@ -51,20 +57,9 @@ const App = () => {
           disabled={isLoading}
         />
         <button type="submit" disabled={isLoading}>
-          {isLoading ? 'Wird verarbeitet...' : 'Anfragen'}
+          {isLoading ? "Wird verarbeitet..." : "Senden"}
         </button>
       </form>
-      {isLoading && (
-        <div class="loading-bar">
-          <div class="loading-progress"></div>
-        </div>
-      )}
-      {result && (
-        <div>
-          <h2>Antwort:</h2>
-          <div>{formatResult(result)}</div>
-        </div>
-      )}
     </div>
   );
 };
