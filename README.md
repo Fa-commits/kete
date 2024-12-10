@@ -17,13 +17,13 @@ Dieses Projekt implementiert einen Retrieval-Augmented Generation (RAG) Agenten,
    cd your-repo-name
    ```
 
-2. Erstellen Sie eine virtuelle Umgebung und aktivieren Sie sie:
+2. Erstellen Sie eine virtuelle Umgebung im Backend-Verzeichnis und aktivieren Sie diese:
    ```
    python -m venv venv
    source venv/bin/activate  # Für Windows: venv\Scripts\activate
    ```
 
-3. Installieren Sie die erforderlichen Pakete:
+3. Installieren Sie die erforderlichen Pakete im Backend-Verzeichnis:
    ```
    pip install -r requirements.txt
    ```
@@ -42,14 +42,24 @@ Dieses Projekt implementiert einen Retrieval-Augmented Generation (RAG) Agenten,
    MYSQL_PORT=your_port
    MYSQL_SSL_CA=/location/of/ca.pem
    ```
+5. Installieren Sie die erforderlichen Packete im Frontend-Verzeichnis
+   ```
+   npm install
+   ```
 
 ## Verwendung
 
 1. Stellen Sie sicher, dass Ihre virtuelle Umgebung aktiviert ist.
 
-2. Führen Sie das Hauptskript aus:
+2. Führen Sie die Hauptskripte aus:
    ```
-   python src/main.py
+   //Starten der Frontend App
+   cd frontend/frontend/
+   npm run dev
+
+   //Starten der Backend App
+   cd backend/
+   python backend/main.py
    ```
 
 ## Projektstruktur
@@ -57,45 +67,57 @@ Dieses Projekt implementiert einen Retrieval-Augmented Generation (RAG) Agenten,
 ```
 project_root/
 │
-├── src/
+├── backend/
 │   ├── __init__.py
-│   ├── database.py
-│   ├── outputparser.py
+│   ├── app.py
+│   ├── main.py
+│   ├── multi_agent_system.py
 │   ├── rag_agent.py
-│   └── main.py
+│   └── venv/
+│       ├── bin/
+│       ├── include/
+│       ├── lib/
+│       └── pyvenv.cfg
+│
+├── frontend/
+│   ├── frontend/
+│   │   ├── .gitignore
+│   │   ├── index.html
+│   │   ├── jsconfig.json
+│   │   ├── package.json
+│   │   ├── public/
+│   │   ├── README.md
+│   │   ├── src/
+│   │   └── vite.config.js
 │
 ├── .env
 ├── .gitignore
-└── requirements.txt
+├── LICENSE
+├── README.md
+├── requirements.txt
+└── package.json
 ```
 
-- `database.py`: Enthält Funktionen für die Datenbankverbindung und -abfragen.
-- `rag_agent.py`: Implementiert den RAG-Agenten mit LangChain.
-- `main.py`: Hauptskript zum Ausführen des Agenten.
-- `outputparser.py`: Enthält die Aufbereitung der AI-Messages welche im ReAct-Agent genutzt werden um den Promt korrekt auszuwerden.
+- `backend/`: Enthält den Backend-Code und die virtuelle Umgebung.
+  - `main.py`: Hauptskript zum Ausführen des Agenten.
+  - `multi_agent_system.py`: Implementiert das Multi-Agenten-System.
+  - `rag_agent.py`: Implementiert den RAG-Agenten mit LangChain.
+  - `app.py`: Startet die Backend-Anwendung.
 
-## Neueste Änderungen
+- `frontend/`: Enthält den Frontend-Code.
+  - `src/`: Enthält den Quellcode für das Frontend.
+  - `public/`: Enthält öffentliche Assets.
+  - `index.html`: Haupt-HTML-Datei.
+  - `package.json`: Enthält die Abhängigkeiten und Skripte für das Frontend.
+  - `vite.config.js`: Konfigurationsdatei für Vite.
 
-### Implementierung des RAG-Agents mit MySQL-Integration
-Pull Request: [#1](https://github.com/Fa-commits/kete/pull/1)
-
-#### Änderungen:
-- Hinzufügen der Datei `.DS_Store`.
-- Modifikation der `.gitignore`:
-  - Hinzufügen von `.pyc` zur Ignorierliste.
-- Aktualisierung der `requirements.txt`:
-  - Hinzufügen der folgenden Abhängigkeiten:
-    - `langchain`
-    - `langchain-openai`
-    - `langchain-community`
-    - `langchain-experimental`
-    - `langsmith`
-    - `openai`
-    - `mysql-connector-python`
-    - `python-dotenv`
-    - `sqlalchemy`
-
-Für weitere Details siehe den [Pull Request](https://github.com/Fa-commits/kete/pull/1).
+## Technologien
+- Python: Programmiersprache für das Backend.
+- LangChain: Framework für die Verarbeitung natürlicher Sprache.
+- LangSmith: API für die Verarbeitung natürlicher Sprache.
+- MySQL: Relationale Datenbank.
+- React: JavaScript-Bibliothek für das Frontend.
+- Vite: Build-Tool für das Frontend.
 
 ## Entwicklung
 
