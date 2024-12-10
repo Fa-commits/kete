@@ -52,12 +52,13 @@ Dieses Projekt implementiert einen Retrieval-Augmented Generation (RAG) Agenten,
 1. Stellen Sie sicher, dass Ihre virtuelle Umgebung aktiviert ist.
 
 2. Führen Sie die Hauptskripte aus:
+   Starten der Frontend App
    ```
-   //Starten der Frontend App
    cd frontend/frontend/
    npm run dev
-
-   //Starten der Backend App
+   ```
+   Starten der Backend App
+   ```
    cd backend/
    python backend/main.py
    ```
