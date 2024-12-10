@@ -43,4 +43,10 @@ class MultiAgentSystem:
         """
         
         # Rufe das LLM auf, um die Zusammenfassung zu generieren
-        return llm.invoke(prompt)
+        response = llm.invoke(prompt)
+        
+        # Extrahiere den Textinhalt aus der Antwort
+        if hasattr(response, 'content'):
+            return response.content
+        else:
+            return str(response)

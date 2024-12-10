@@ -11,13 +11,15 @@ from dotenv import load_dotenv
 from langsmith import Client
 from langchain.callbacks.tracers.langchain import LangChainTracer
 from langchain_core.tracers.context import tracing_v2_enabled
+from langchain_community.cache import BaseCache
+from langchain_experimental.sql import SQLDatabaseChain
 
 import os
 
 # Lade Umgebungsvariablen aus .env Datei
 load_dotenv()
 
-def main():
+def main(query):
     # Initialisiere Language Model und Datenbank
     llm = ChatOpenAI(temperature=0)
     db = SQLDatabase.from_uri(os.getenv("MYSQL_CONNECTION_STRING"))
@@ -26,9 +28,15 @@ def main():
     client = Client()
     tracer = LangChainTracer(project_name=os.getenv("LANGCHAIN_PROJECT"))
     
+    BaseCache.model_rebuild()
+    
+    # Definiere SQL-Tool
+    sql_chain = SQLDatabaseChain.from_llm(llm=llm, db=db, verbose=True)
+    SQLDatabaseChain.model_rebuild()
+    
     # Definiere SQL-Tool
     sql_tool = StructuredTool.from_function(
-        func=lambda input: SQLDatabaseChain.from_llm(llm=llm, db=db, verbose=True).invoke(query),
+        func=lambda input: sql_chain.invoke(input),
         name="sql_database",
         description="Nützlich für Abfragen der SQL-Datenbank für faktische Informationen.",
         return_direct=False,
@@ -97,16 +105,17 @@ def main():
     # Erstelle Multi-Agent-System
     multi_agent_system = MultiAgentSystem([sql_agent, search_agent])
     
-    # Hauptschleife für Benutzerabfragen
-    while True:
-        query = input("Bitte geben Sie Ihre Frage ein (oder 'exit' zum Beenden): ")
-        if query.lower() == 'exit':
-            break
+
         
-        # Verwende Multi-Agent-System zur Beantwortung der Frage
-        result = multi_agent_system.run(query)
-        print(result)
-        
+    # Verwende Multi-Agent-System zur Beantwortung der Frage
+    result = multi_agent_system.run(query)
+    # Stellen Sie sicher, dass das Ergebnis ein String ist
+    if isinstance(result, str):
+        return result
+    elif hasattr(result, 'content'):
+        return result.content
+    else:
+        return str(result)        
         # Alternative: Verwende einzelne Agenten (auskommentiert)
         # sql_result = query_agent(sql_agent, query, sql_adaptive_selector, sql_learning_system, sql_user_profile)
         # search_result = query_agent(search_agent, query, search_adaptive_selector, search_learning_system, search_user_profile)
@@ -115,4 +124,8 @@ def main():
 
 # Führe das Hauptprogramm aus, wenn das Skript direkt ausgeführt wird
 if __name__ == "__main__":
-    main()
+    # Dieser Block wird nur ausgeführt, wenn das Skript direkt gestartet wird
+    # und nicht, wenn es als Modul importiert wird
+    query = input("Bitte geben Sie Ihre Frage ein: ")
+    result = main(query)
+    print(result)
