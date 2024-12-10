@@ -116,7 +116,7 @@ project_root/
 - LangChain: Framework für die Verarbeitung natürlicher Sprache.
 - LangSmith: API für die Verarbeitung natürlicher Sprache.
 - MySQL: Relationale Datenbank.
-- React: JavaScript-Bibliothek für das Frontend.
+- Preact: JavaScript-Bibliothek für das Frontend.
 - Vite: Build-Tool für das Frontend.
 
 ## Entwicklung
