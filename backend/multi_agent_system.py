@@ -10,7 +10,7 @@ class MultiAgentSystem:
         results = []
         for agent in self.agents:
             # Rufe jeden Agenten mit der Anfrage auf
-            result = agent.invoke({"input": query})
+            result = agent.invoke({"input": query, "tools": str(agent.tools)})
             # Extrahiere das Ergebnis und füge es der Liste hinzu
             results.append(result['output'] if isinstance(result, dict) and 'output' in result else str(result))
         
@@ -39,7 +39,7 @@ class MultiAgentSystem:
         5. Ziehe eine Gesamtschlussfolgerung basierend auf allen Agentenergebnissen.
         6. Wenn möglich, gib konkrete Handlungsempfehlungen oder nächste Schritte an.
 
-        Strukturiere deine Antwort klar und übersichtlich, sodass die Beiträge jedes Agenten und die Gesamtanalyse leicht zu verstehen sind.
+        Strukturiere deine Antwort klar und übersichtlich, sodass sie direkt auf die Hauptfragestellung und ihre Teilaspekte eingeht..
         """
         
         # Rufe das LLM auf, um die Zusammenfassung zu generieren

@@ -16,5 +16,9 @@ def handle_query():
         print(f"Error: {str(e)}")
         return jsonify({'error': 'Ein Fehler ist aufgetreten beim Verarbeiten der Anfrage.'}), 500
 
+@app.route('/')
+def welcome():
+    return 'Backend Server is running!'
+
 if __name__ == '__main__':
     app.run(debug=True)

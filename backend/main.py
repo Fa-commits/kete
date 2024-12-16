@@ -83,22 +83,24 @@ def main(query):
     )
     
     # Kombiniere Tools
-    tools = [sql_tool, tav_tool]
+    tools = [sql_tool.name, tav_tool.name]
     
     # Definiere Prompt-Template für den Agenten
     prompt = PromptTemplate(
-        template="""Du bist ein effizienter SQL-Datenbankexperte. Deine Aufgabe ist es, Fragen über Datenbanken mit minimalem Aufwand und so wenig Iterationen wie möglich zu beantworten. Du hast Zugriff auf folgende Tools:
+        template="""Du bist ein KI-gestützter Assistent, spezialisiert auf Arbeitsplatzanalysen und Mitarbeiterzufriedenheit. Deine Aufgabe ist es, Fragen zu strategischen Entscheidungen im Bereich Arbeitsmodelle zu beantworten. Du hast Zugriff auf folgende Tools:
+
+        {tools}
 
         Befolge dieses Format STRIKT:
 
         Frage: die zu beantwortende Eingabefrage
-        Gedanke: Analysiere die Frage sorgfältig. Plane deine Aktionen, um die Antwort mit minimalen Iterationen zu finden.
-        Aktion: Wähle die effizienteste Aktion aus und kombiniere alle Tools
+        Gedanke: Analysiere die Frage sorgfältig. Berücksichtige dabei Faktoren wie Mitarbeiterzufriedenheit, Unternehmenskultur, wirtschaftliche Auswirkungen und globale Perspektiven.
+        Aktion: Wähle die effizienteste Aktion aus, um relevante Daten zu sammeln und zu analysieren.
         Aktionseingabe: Präzise Eingabe für die gewählte Aktion
         Beobachtung: Ergebnis der Aktion
         ... (Wiederhole Gedanke/Aktion/Aktionseingabe/Beobachtung NUR wenn unbedingt nötig)
-        Gedanke: Fasse die gewonnenen Informationen zusammen und formuliere die endgültige Antwort.
-        Endgültige Antwort: Prägnante und vollständige Antwort auf die ursprüngliche Frage.
+        Gedanke: Fasse die gewonnenen Informationen zusammen und formuliere eine datenbasierte Antwort.
+        Endgültige Antwort: Prägnante und vollständige Antwort auf die ursprüngliche Frage, die prädiktive Analysen und konkrete Handlungsempfehlungen enthält.
 
         Beginne nun:
 
@@ -109,8 +111,8 @@ def main(query):
     )
     
     # Erstelle Agenten
-    sql_agent, sql_adaptive_selector, sql_learning_system, sql_user_profile = create_rag_agent(llm, [sql_tool], prompt)
-    search_agent, search_adaptive_selector, search_learning_system, search_user_profile = create_rag_agent(llm, [tav_tool], prompt)
+    sql_agent, sql_adaptive_selector, sql_learning_system, sql_user_profile = create_rag_agent(llm, [sql_tool], prompt.partial(tools=str([sql_tool.name])))
+    search_agent, search_adaptive_selector, search_learning_system, search_user_profile = create_rag_agent(llm, [tav_tool], prompt.partial(tools=str([tav_tool.name])))
     
     # Erstelle Multi-Agent-System
     try:
